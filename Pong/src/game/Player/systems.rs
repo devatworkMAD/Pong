@@ -7,19 +7,17 @@ pub const PLAYER_SIZE: (f32, f32) = (128.0, 16.0);
 
 pub fn spawn_player(
     mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
     window_query: Query<&Window, With<PrimaryWindow>>
 ) {
     let window = window_query.get_single().unwrap();
 
-    commands.spawn((SpriteBundle {
-        sprite: Sprite {
-            color: Color::rgb(0.3, 0.5, 0.8),
-            custom_size: Some(Vec2::new(PLAYER_SIZE.0, PLAYER_SIZE.1)),
-            ..Default::default()
-        },
-        transform: Transform::from_xyz(window.width() * 0.5, window.height() * 0.05, 0.0),
-        ..Default::default()
-    }, Player{}
+    commands.spawn((
+        Mesh2d(meshes.add(Rectangle::new(PLAYER_SIZE.0, PLAYER_SIZE.1))),
+        MeshMaterial2d(materials.add(Color::hsl(1.0, 1.0, 1.0))),
+        Transform::from_xyz(window.width() * 0.5, window.height() * 0.05, 0.0),
+        Player {}
     ));
 }
 
