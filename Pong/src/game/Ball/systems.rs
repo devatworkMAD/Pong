@@ -82,9 +82,26 @@ fn is_colliding(player_transform: &Transform, ball_transform: &Transform) -> boo
     let player_half_width = PLAYER_SIZE.0 / 2.0;
     let player_half_height = PLAYER_SIZE.1 / 2.0;
 
-    // Check if the ball is within the player's bounding box
     ball_pos.x >= player_pos.x - player_half_width &&
         ball_pos.x <= player_pos.x + player_half_width &&
         ball_pos.y - BALL_SIZE <= player_pos.y + player_half_height &&
         ball_pos.y + BALL_SIZE >= player_pos.y - player_half_height
+}
+
+pub fn confine_ball(
+    mut ball_query: Query<(&mut Transform), With<Ball>>,
+    mut ball_speed: ResMut<BallSpeed>,
+    window_query: Query<&Window, With<PrimaryWindow>>
+){
+    let window = window_query.get_single().unwrap();
+    let half_ball_size = BALL_SIZE / 2.0;
+
+    if let Ok(mut transform) = ball_query.get_single_mut() {
+        if  transform.translation.x  >= window.width() - half_ball_size{
+            ball_speed.x = -ball_speed.x.abs();
+        }
+        if  transform.translation.x  <= half_ball_size{
+            ball_speed.x = ball_speed.x.abs();
+        }
+    }
 }

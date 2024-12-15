@@ -22,7 +22,8 @@ impl Plugin for BallPlugin {
             .add_systems(Update,(
                 move_ball,
                 gravity,
-                hit_by_player
+                hit_by_player,
+                confine_ball
                 ));
     }
 }
