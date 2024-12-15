@@ -25,14 +25,11 @@ pub fn spawn_ball(
     ));
 }
 
-#[derive(Resource)]
-pub struct BallSpeed {
-    x: f32,
-    y: f32
-}
+#[derive(Resource, Deref, DerefMut)]
+pub struct BallSpeed(pub Vec2);
 
 pub fn setup_BallSpeed(mut commands: Commands) {
-    commands.insert_resource(BallSpeed{x: 0.0, y: 0.0});
+    commands.insert_resource(BallSpeed(Vec2::new(0.0, 0.0)));
 }
 
 pub fn move_ball(
