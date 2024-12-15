@@ -21,7 +21,7 @@ pub fn spawn_ball(
         Mesh2d(meshes.add(Circle::new(BALL_SIZE))),
         MeshMaterial2d(materials.add(Color::hsl(1.0, 1.0, 1.0))),
         Transform::from_xyz(window.width() * 0.5, window.height() - BALL_SIZE, 0.0),
-        Ball{}
+        Ball
     ));
 }
 
