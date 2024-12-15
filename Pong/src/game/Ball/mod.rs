@@ -16,7 +16,13 @@ impl Plugin for BallPlugin {
             .add_plugins(#[cfg(not(target_arch = "wasm32"))]
                          Wireframe2dPlugin)
             .add_systems(Startup, (
-                spawn_ball
-            ));
+                spawn_ball,
+                setup_BallSpeed
+            ))
+            .add_systems(Update,(
+                move_ball,
+                gravity,
+                hit_by_player
+                ));
     }
 }

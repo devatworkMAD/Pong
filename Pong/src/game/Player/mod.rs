@@ -1,7 +1,7 @@
 use bevy::app::Plugin;
 use bevy::prelude::*;
 
-mod components;
+pub(crate) mod components;
 mod systems;
 use systems::*;
 
