@@ -2,8 +2,8 @@ use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use crate::game::Player::components::Player;
 
-pub const PLAYER_SPEED: f32 = 500.0;
-pub const PLAYER_SIZE: f32 = 64.0;
+pub const PLAYER_SPEED: f32 = 1000.0;
+pub const PLAYER_SIZE: (f32, f32) = (128.0, 16.0);
 
 pub fn spawn_player(
     mut commands: Commands,
@@ -14,10 +14,10 @@ pub fn spawn_player(
     commands.spawn((SpriteBundle {
         sprite: Sprite {
             color: Color::rgb(0.3, 0.5, 0.8),
-            custom_size: Some(Vec2::new(PLAYER_SIZE, PLAYER_SIZE)),
+            custom_size: Some(Vec2::new(PLAYER_SIZE.0, PLAYER_SIZE.1)),
             ..Default::default()
         },
-        transform: Transform::from_xyz(window.width() * 0.5, window.height() * 0.05, 0.0), // Position of the box
+        transform: Transform::from_xyz(window.width() * 0.5, window.height() * 0.05, 0.0),
         ..Default::default()
     }, Player{}
     ));
@@ -53,13 +53,12 @@ pub fn confine_player_movement(
     if let Ok(mut player_transform) = player_query.get_single_mut() {
         let window = window_query.get_single().unwrap();
 
-        let half_player_size = PLAYER_SIZE / 2.0; // 32.0
-        let x_min = 0.0 + half_player_size;
-        let x_max = window.width() - half_player_size;
+        let half_player_width = PLAYER_SIZE.0 / 2.0;
+        let x_min = 0.0 + half_player_width;
+        let x_max = window.width() - half_player_width;
 
         let mut translation = player_transform.translation;
 
-        // Bound the player x position
         if translation.x < x_min {
             translation.x = x_min;
         } else if translation.x > x_max {
